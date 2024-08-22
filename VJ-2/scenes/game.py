@@ -11,6 +11,7 @@ from elements.jorge import Player
 
 from elements.bug import Enemy
 
+from time import sleep
 
 def gameLoop():
     ''' iniciamos los modulos de pygame'''
@@ -65,7 +66,14 @@ def gameLoop():
         
         if pygame.sprite.spritecollideany(player, enemies):
             player.kill()
-            screenblit
+            screen = pygame.display.set_mode((400, 640))
+            background_image = pygame.image.load("assets/finalImage.jpeg").convert()
+            font = pygame.font.Font(None, 50)
+            text = font.render("PERDISTE.", True, (0, 255, 0))
+            screen.blit(background_image, [0, 0])
+            screen.blit(text, [200, 320])
+            pygame.display.flip()
+            sleep(5)
             running = False
         
 
