@@ -1,7 +1,7 @@
 """Este módulo contiene el loop del juego."""
 
 import pygame
-from pygame.locals import (QUIT)
+from pygame.locals import QUIT, RLEACCEL
 
 from elements.player import Player
 from elements.meteor import Meteor
@@ -27,6 +27,14 @@ def game_loop() -> None:
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT)) # Se crea la pantalla.
     background_image = pygame.image.load("assets/pixelBackground.jpg").convert() # Fondo pantalla.
 
+    # Aquí creo la imagen del corazón:
+    heart_png = pygame.image.load('assets/heart.png') # Aquí se guarda la foto.
+    heart_png_scaled = pygame.transform.scale(heart_png, (60, 60)) # La escalamos.
+    sprite_heart = pygame.sprite.Sprite() # Creamos un sprite.
+    sprite_heart.surf = heart_png_scaled # Le asignamos una foto al dibujo.
+    sprite_heart.set_colorkey((0, 0, 0), RLEACCEL) # Se asegura de que los colores no cambien.
+    sprite_heart.rect = sprite_heart.surf.get_rect(center = (80, 80)) # Crea el "área" de colisión del jugador.
+
     clock = pygame.time.Clock() # Se crea el reloj del juego (como FPS).
 
     ADDENEMY = pygame.USEREVENT + 1 # Se crea un evento que después podré llamar.
@@ -43,7 +51,7 @@ def game_loop() -> None:
     while running:
         screen.blit(background_image, [0, 0]) # Actualizo el fondo (o sino las imágenes se pegan).
         
-        # La línea anterior borró las sprites, ahora las dibujo de nuevo:
+        # La línea anterior se puso sobre las sprites, ahora las dibujo de nuevo:
         for entity in all_sprites:
             screen.blit(entity.surf, entity.rect)
         
@@ -55,33 +63,26 @@ def game_loop() -> None:
         player.update(pressed_keys) # El jugador se mueve según lo digan las teclas presionadas.
         enemies.update() # Los enemigos se mueven (aleatoriamente).
         
-
         if pygame.sprite.spritecollideany(player, enemies):
-            player.kill()
-            font = pygame.font.Font(None, 50)
-            text = font.render("PERDISTE.", True, (0, 255, 0))
-            screen.blit(background_image, [0, 0])
-            screen.blit(text, [200, 320])
-            pygame.display.flip()
-            sleep(5)
-            running = False
+            player.lives -= 1
         
-
         pygame.display.flip()
         
-        # iteramos sobre cada evento en la cola
+        # iteramos sobre cada evento en la cola:
         for event in pygame.event.get():
             if event.type == QUIT:
                 running = False
             
+            # Si se ejecutó el evento de añadir un enemigo:
             elif event.type == ADDENEMY:
                 new_enemy = Meteor(SCREEN_WIDTH, SCREEN_HEIGHT)
                 enemies.add(new_enemy) # Añadimos al enemigo al grupo de los enemigos.
                 all_sprites.add(new_enemy) # Añadimos al enemigo al grupo de todos los sprites.
             
+            # Si apreté el mouse, disparo.
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 player.shoot(pygame.mouse.get_pos())
 
-        pygame.sprite.groupcollide(player.projectiles, enemies, True, True)
+        pygame.sprite.groupcollide(player.projectiles, enemies, True, True) # Borra las colisiones.
         clock.tick(40)
         

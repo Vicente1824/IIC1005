@@ -15,3 +15,26 @@
 6. En ```game.py``` se da inicio al loop.
 7. En ```game.py``` cada vez que inicio un loop actualizo toda la pantalla con ```.blit()``` y poniéndole el fondo.
 8. En ```game.py``` tengo que volver a dibujar todas las entidades en sus respectivas posiciones usando
+
+## Archivos listos:
+- ```meteor.py```.
+
+# Features que podemos hacer
+## De un punto
+### PowerUps
+### Habilidades especiales del jugador
+### Nueva mecánica
+### Menú de inicio y pausa
+### Música y sonido
+### Sistema de puntuación
+### Vidas del jugador (Vicho)
+### Pantalla de muerte
+### Nuevos enemigos
+### Logros (Vicho)
+### Personalización del jugador
+### Entorno interactivo
+
+## De dos puntos
+### Progresión de niveles
+### Boss fight (Vicho)
+### Modo de juego cooperativo (Vicho)
