@@ -1,7 +1,4 @@
-'''
-Hola este es modulo game,
-este modulo manejara la escena donde ocurre nuestro juego
-'''
+"""Este módulo contiene el loop del juego."""
 
 import pygame
 
@@ -13,55 +10,45 @@ from elements.bug import Enemy
 
 from time import sleep
 
-def gameLoop():
-    ''' iniciamos los modulos de pygame'''
+"""
+Mini resumen:
+game_loop será un loop que está constantemente corriendo. El clock hace que hayan x iteraciones
+del gameloop cada segundo. En cada iteración pueden pasar muchas cosas. Por ejemplo, si el teclado
+está siendo apretado, el jugador se moverá, y quizás durante esa misma iteración, aparezca un
+enemigo. Todo eso ocurre dentro de una iteración, por lo que cuando termine la iteración se
+actualizará la pantalla para mostrar ambos cambios exactamente al mismo tiempo.
+"""
 
-    pygame.init()
+def game_loop(screen_width: int, screen_height: int) -> None:
+    """Loop principal del juego."""
 
-    ''' Creamos y editamos la ventana de pygame (escena) '''
-    ''' 1.-definir el tamaño de la ventana'''
-    SCREEN_WIDTH = 1000
-    SCREEN_HEIGHT = 700
-
-    ''' 2.- crear el objeto pantalla'''
-    screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
-    background_image = pygame.image.load("assets/pixelBackground.jpg").convert()
-
-    ''' Preparamos el gameloop '''
-    ''' 1.- creamos el reloj del juego'''
-
-    clock = pygame.time.Clock()
+    clock = pygame.time.Clock() # Crea el reloj del juego (como FPS).
+    
     ''' 2.- generador de enemigos'''
-
     ADDENEMY = pygame.USEREVENT + 1
     pygame.time.set_timer(ADDENEMY, 600)
 
-    ''' 3.- creamos la instancia de jugador'''
-    player = Player(SCREEN_WIDTH, SCREEN_HEIGHT)
+    player = Player(screen_width, screen_height) # Se crea el jugador.
 
     ''' 4.- contenedores de enemigos y jugador'''
     enemies = pygame.sprite.Group()
-    all_sprites = pygame.sprite.Group()
+    all_sprites = pygame.sprite.Group() # Guardo todos los sprites aquí.
     all_sprites.add(player)
 
-    ''' hora de hacer el gameloop '''
-    # variable booleana para manejar el loop
     running = True
-
-    # loop principal del juego
 
     while running:
 
         screen.blit(background_image, [0, 0])
         
         for entity in all_sprites:
-                screen.blit(entity.surf, entity.rect)
+            screen.blit(entity.surf, entity.rect)
         
         for projectile in player.projectiles:
             screen.blit(projectile.surf, projectile.rect)
         
-        pressed_keys = pygame.key.get_pressed()
-        player.update(pressed_keys)
+        pressed_keys = pygame.key.get_pressed() # Esto da como una lista qué dice qué teclas están presionadas en este fotograma
+        player.update(pressed_keys) 
         enemies.update()
         
         if pygame.sprite.spritecollideany(player, enemies):
@@ -81,7 +68,7 @@ def gameLoop():
         
         # iteramos sobre cada evento en la cola
         for event in pygame.event.get():
-            # se presiono una tecla?
+            # Si se presiona cualquier tecla:
             if event.type == KEYDOWN:
                 # era la tecla de escape? -> entonces terminamos
                 if event.key == K_ESCAPE:
