@@ -9,15 +9,15 @@ from pygame.locals import RLEACCEL
 BUGpng = pygame.image.load('assets/meteor.png')
 BUGpng_scaled = pygame.transform.scale(BUGpng, (64, 64))
 
-class Enemy(pygame.sprite.Sprite):
+class Meteor(pygame.sprite.Sprite):
     def __init__(self, screen_width: int, screen_height: int):
-        super(Enemy, self).__init__()
+        super(Meteor, self).__init__()
         self.screen_width = screen_width
         self.screen_height = screen_height
         self.surf = BUGpng_scaled
         self.surf.set_colorkey((0, 0, 0), RLEACCEL)
-        # la posicion inicial es generada aleatoriamente.
-        self.rect = self.surf.get_rect(center = (randint(0, screen_width), -100))
+        
+        self.rect = self.surf.get_rect(center = (randint(0, screen_width), -100)) # Posición inicial.
 
     def update(self):
         self.rect.move_ip(0, 2)

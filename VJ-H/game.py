@@ -1,10 +1,10 @@
 """Este módulo contiene el loop del juego."""
 
 import pygame
-from pygame.locals import (K_ESCAPE, KEYDOWN, QUIT)
+from pygame.locals import (QUIT)
 
-from elements.jorge import Player
-from elements.meteorito import Enemy
+from elements.player import Player
+from elements.meteor import Meteor
 from parametros import SCREEN_WIDTH, SCREEN_HEIGHT
 
 from time import sleep
@@ -17,6 +17,7 @@ está siendo apretado, el jugador se moverá, y quizás durante esa misma iterac
 enemigo. Todo eso ocurre dentro de una iteración, por lo que cuando termine la iteración se
 actualizará la pantalla para mostrar ambos cambios exactamente al mismo tiempo.
 """
+"""https://docs.google.com/presentation/d/19HiltlZxWHHvsCcHTysb3Hx---TpeK4n/edit#slide=id.p1"""
 
 def game_loop() -> None:
     """Loop principal del juego."""
@@ -28,9 +29,8 @@ def game_loop() -> None:
 
     clock = pygame.time.Clock() # Se crea el reloj del juego (como FPS).
 
-    ''' 2.- generador de enemigos'''
-    ADDENEMY = pygame.USEREVENT + 1
-    pygame.time.set_timer(ADDENEMY, 600)
+    ADDENEMY = pygame.USEREVENT + 1 # Se crea un evento que después podré llamar.
+    pygame.time.set_timer(ADDENEMY, 1000) # Se lama el evento cada un segundo.
 
     player = Player(SCREEN_WIDTH, SCREEN_HEIGHT) # Se crea el jugador.
 
@@ -55,10 +55,9 @@ def game_loop() -> None:
         player.update(pressed_keys) # El jugador se mueve según lo digan las teclas presionadas.
         enemies.update() # Los enemigos se mueven (aleatoriamente).
         
+
         if pygame.sprite.spritecollideany(player, enemies):
             player.kill()
-            screen = pygame.display.set_mode((400, 640))
-            background_image = pygame.image.load("assets/finalImage.jpeg").convert()
             font = pygame.font.Font(None, 50)
             text = font.render("PERDISTE.", True, (0, 255, 0))
             screen.blit(background_image, [0, 0])
@@ -76,7 +75,7 @@ def game_loop() -> None:
                 running = False
             
             elif event.type == ADDENEMY:
-                new_enemy = Enemy(SCREEN_WIDTH, SCREEN_HEIGHT)
+                new_enemy = Meteor(SCREEN_WIDTH, SCREEN_HEIGHT)
                 enemies.add(new_enemy) # Añadimos al enemigo al grupo de los enemigos.
                 all_sprites.add(new_enemy) # Añadimos al enemigo al grupo de todos los sprites.
             

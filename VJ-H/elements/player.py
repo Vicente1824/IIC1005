@@ -14,11 +14,12 @@ class Player(pygame.sprite.Sprite):
     # Sprite es un dibujo. Al heredar, crearemos un dibujo que se mueve y le daremos métodos.
     def __init__(self, screen_width: int, screen_height: int):
         super(Player, self).__init__() # Heredamos la clase (PA).
+        self.screen_width: int = screen_width # Usamos esto para recordar el ancho de la pantalla.
+        self.screen_height: int = screen_height # Usamos esto para recordar el alto de la pantalla.
         self.surf = JorgePNG_scaled # Le asignamos una foto al dibujo.
         self.surf.set_colorkey((0, 0, 0), RLEACCEL) 
         self.rect = self.surf.get_rect(center = (screen_width / 2, screen_height - 100)) # Crea el "área" de colisión del jugador.
-        self.screen_width: int = screen_width # Usamos esto para recordar el ancho de la pantalla.
-        self.screen_height: int = screen_height # Usamos esto para recordar el alto de la pantalla.
+        self.lives = 3
         self.projectiles = pygame.sprite.Group()
 
     def update(self, pressed_keys):
