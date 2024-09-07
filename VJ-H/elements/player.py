@@ -6,8 +6,10 @@ import math
 
 from elements.projectile import Projectile
 
-JorgePNG = pygame.image.load('assets/spaceship.png') # Aquí se guarda la foto.
-JorgePNG_scaled = pygame.transform.scale(JorgePNG, (80, 80)) # La escalamos.
+spaceship = pygame.image.load('assets/spaceship.png') # Aquí se guarda la foto.
+spaceship_scaled = pygame.transform.scale(spaceship, (80, 80)) # La escalamos.
+fire = pygame.image.load('assets/fire.png') # Aquí se guarda la foto del fuego.
+fire_scaled = pygame.transform.scale(fire, (30, 30)) # La escalamos.
 
 class Player(pygame.sprite.Sprite):
     """Clase que representa al jugador."""
@@ -19,11 +21,17 @@ class Player(pygame.sprite.Sprite):
         super(Player, self).__init__() # Heredamos la clase (PA).
         self.screen_width: int = screen_width # Usamos esto para recordar el ancho de la pantalla.
         self.screen_height: int = screen_height # Usamos esto para recordar el alto de la pantalla.
-        self.surf = JorgePNG_scaled # Le asignamos una foto al dibujo.
+        self.surf = spaceship_scaled # Le asignamos una foto al dibujo.
         self.surf.set_colorkey((0, 0, 0), RLEACCEL) # Se asegura de que los colores no cambien.
         self.rect = self.surf.get_rect(center = (screen_width / 2, screen_height - 100)) # Crea el "área" de colisión del jugador.
         self.lives: int = 3 # Le daré 3 vidas al jugador.
-        self.projectiles = pygame.sprite.Group() # Aquí guardo los proyectiles que he lanzadoo.
+        self.score: int = 0 # Puntaje del jugador.
+        self.projectiles = pygame.sprite.Group() # Aquí guardo los proyectiles que he lanzado.
+
+        self.fire_sprite = pygame.sprite.Sprite() # Creamos un sprite.
+        self.fire_sprite.surf = fire_scaled # Le asignamos una foto al dibujo.
+        self.fire_sprite.surf.set_colorkey((0, 0, 0), RLEACCEL) # Se asegura de que los colores no cambien.
+        self.fire_sprite.rect = self.fire_sprite.surf.get_rect(center = (screen_width / 2, screen_height - 45))
 
     def update(self, pressed_keys):
         """Actualiza la posición del jugador."""

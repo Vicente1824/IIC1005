@@ -32,8 +32,14 @@ def game_loop() -> None:
     heart_png_scaled = pygame.transform.scale(heart_png, (60, 60)) # La escalamos.
     sprite_heart = pygame.sprite.Sprite() # Creamos un sprite.
     sprite_heart.surf = heart_png_scaled # Le asignamos una foto al dibujo.
-    sprite_heart.set_colorkey((0, 0, 0), RLEACCEL) # Se asegura de que los colores no cambien.
-    sprite_heart.rect = sprite_heart.surf.get_rect(center = (80, 80)) # Crea el "área" de colisión del jugador.
+    sprite_heart.rect = sprite_heart.surf.get_rect(center = (60, 60)) # Lo situo en la esquina.
+
+    # Aquí creo la imagen de la estrella:
+    star_png = pygame.image.load('assets/star.png') # Aquí se guarda la foto.
+    star_png_scaled = pygame.transform.scale(star_png, (120, 60)) # La escalamos.
+    sprite_star = pygame.sprite.Sprite() # Creamos un sprite.
+    sprite_star.surf = star_png_scaled # Le asignamos una foto al dibujo.
+    sprite_star.rect = sprite_star.surf.get_rect(center = (260, 60)) # Lo situo en la esquina.
 
     clock = pygame.time.Clock() # Se crea el reloj del juego (como FPS).
 
@@ -47,8 +53,11 @@ def game_loop() -> None:
     all_sprites.add(player) # Añado al jugador.
 
     running = True
+    lost = False
 
     while running:
+
+        """==================== REDIBUJAR TODAS LAS COSAS ===================="""
         screen.blit(background_image, [0, 0]) # Actualizo el fondo (o sino las imágenes se pegan).
         
         # La línea anterior se puso sobre las sprites, ahora las dibujo de nuevo:
@@ -59,30 +68,56 @@ def game_loop() -> None:
         for projectile in player.projectiles:
             screen.blit(projectile.surf, projectile.rect)
         
+        # Redibujo el corazón:
+        screen.blit(sprite_heart.surf, sprite_heart.rect)
+        
+        # Redibujo el número de vidas:
+        font = pygame.font.Font(None, 50)
+        text = font.render(f"{player.lives} / 3", True, (0, 0, 0))
+        screen.blit(text, (120, 50))
+
+        # Redibujo la estrella:
+        screen.blit(sprite_star.surf, sprite_star.rect)
+
+        # Redibujo el puntaje
+        font = pygame.font.Font(None, 50)
+        text = font.render(f"{player.score}", True, (0, 0, 0))
+        screen.blit(text, (320, 50))
+        
+        """==================== MANEJO DE EVENTOS ===================="""
         pressed_keys = pygame.key.get_pressed() # Da como una lista de qué teclas están presionadas.
         player.update(pressed_keys) # El jugador se mueve según lo digan las teclas presionadas.
         enemies.update() # Los enemigos se mueven (aleatoriamente).
         
-        if pygame.sprite.spritecollideany(player, enemies):
+        # Si choco con algo, pierdo una vida.
+        collided_enemy = pygame.sprite.spritecollideany(player, enemies)
+        if collided_enemy:
             player.lives -= 1
-        
-        pygame.display.flip()
+            collided_enemy.kill()
+            if player.lives == 0:
+                running = False
+                lost = True
         
         # iteramos sobre cada evento en la cola:
         for event in pygame.event.get():
             if event.type == QUIT:
                 running = False
             
-            # Si se ejecutó el evento de añadir un enemigo:
+            # Si se ejecutó el evento de añadir un meteorit:
             elif event.type == ADDENEMY:
                 new_enemy = Meteor(SCREEN_WIDTH, SCREEN_HEIGHT)
-                enemies.add(new_enemy) # Añadimos al enemigo al grupo de los enemigos.
-                all_sprites.add(new_enemy) # Añadimos al enemigo al grupo de todos los sprites.
+                enemies.add(new_enemy) # Añadimos al meteorito al grupo de los meteoritos.
+                all_sprites.add(new_enemy) # Añadimos al meteorito al grupo de todos los sprites.
+                # Como es un meteorito por segundo, le damos puntaje al jugador:
+                player.score += 1
             
             # Si apreté el mouse, disparo.
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 player.shoot(pygame.mouse.get_pos())
-
-        pygame.sprite.groupcollide(player.projectiles, enemies, True, True) # Borra las colisiones.
+        
+        # Esto borra si colisionan los proyectiles con los enemigos:
+        pygame.sprite.groupcollide(player.projectiles, enemies, True, True)
+        
         clock.tick(40)
         
+        pygame.display.flip()

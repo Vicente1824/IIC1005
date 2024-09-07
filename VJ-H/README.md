@@ -17,7 +17,7 @@
 8. En ```game.py``` tengo que volver a dibujar todas las entidades en sus respectivas posiciones usando
 
 ## Archivos listos:
-- ```meteor.py```.
+- ```meteor.py```: Tiene la clase ```Meteor``` que es un meteorito que se mueve a velocidad de 2 por iteración y aparece arriba.
 
 # Features que podemos hacer
 ## De un punto
@@ -26,8 +26,10 @@
 ### Nueva mecánica
 ### Menú de inicio y pausa
 ### Música y sonido
-### Sistema de puntuación
-### Vidas del jugador (Vicho)
+### ✅ Sistema de puntuación (Vicho)
+Se recibe un punto por segundo que ha vivido.
+### ✅ Vidas del jugador (Vicho)
+El jugador parte con 3 vidas, las pierde al chocar contra meteoritos.
 ### Pantalla de muerte
 ### Nuevos enemigos
 ### Logros (Vicho)
