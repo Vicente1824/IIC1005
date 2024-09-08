@@ -19,7 +19,6 @@ está siendo apretado, el jugador se moverá, y quizás durante esa misma iterac
 enemigo. Todo eso ocurre dentro de una iteración, por lo que cuando termine la iteración se
 actualizará la pantalla para mostrar ambos cambios exactamente al mismo tiempo.
 """
-"""https://docs.google.com/presentation/d/19HiltlZxWHHvsCcHTysb3Hx---TpeK4n/edit#slide=id.p1"""
 
 def game_loop() -> None:
     """Loop principal del juego."""
