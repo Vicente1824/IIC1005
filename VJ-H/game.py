@@ -1,15 +1,15 @@
 """Este módulo contiene el loop del juego."""
 
-import pygame, sys, random
-from pygame import Rect, draw, mouse
-import time
+import pygame
+from pygame import Rect, draw
 from pygame.locals import QUIT, RLEACCEL
 
 from elements.player import Player
 from elements.meteor import Meteor
 from parametros import SCREEN_WIDTH, SCREEN_HEIGHT, BLACK, WHITE, GREEN, RED
+from elements.alien import Alien
+from elements.alien_plus import AlienPlus
 
-from time import sleep
 
 """
 Mini resumen:
@@ -44,13 +44,18 @@ def game_loop() -> None:
 
     clock = pygame.time.Clock() # Se crea el reloj del juego (como FPS).
 
-    ADDENEMY = pygame.USEREVENT + 1 # Se crea un evento que después podré llamar.
-    pygame.time.set_timer(ADDENEMY, 1000) # Se lama el evento cada un segundo.
+    ADDMETEOR = pygame.USEREVENT + 1 # Se crea un evento "METEOR" que después podré llamar.
+    ADDALIEN = pygame.USEREVENT + 2 # Se crea un evento "ALIEN" que después podré llamar.
+    ADDALIENPLUS = pygame.USEREVENT + 3 # Se crea un evento "ALIENPLUS" que después podré llamar.
+    pygame.time.set_timer(ADDMETEOR, 1000) # Se lama el evento cada un segundo.
+    pygame.time.set_timer(ADDALIEN, 3000) # Se lama el evento cada un segundo.
+    pygame.time.set_timer(ADDALIENPLUS, 5000) # Se lama el evento cada un segundo.
 
     player = Player(SCREEN_WIDTH, SCREEN_HEIGHT) # Se crea el jugador.
 
     enemies = pygame.sprite.Group() # Guardo los sprites de enemigos aquí.
     all_sprites = pygame.sprite.Group() # Guardo todos los sprites aquí.
+    alien_projectiles = pygame.sprite.Group() # Guardo los proyectiles de los aliens aquí.
     all_sprites.add(player) # Añado al jugador.
 
     #Cargamos los efectos de sonido.
@@ -112,7 +117,6 @@ def game_loop() -> None:
                     y + (continue_button.height - text_two.get_height()) // 2 + 130))
         pygame.display.update()   
 
-
     running = True
     lost = False
     game_over = False #Variable para controlar el termino del juego.
@@ -162,10 +166,14 @@ def game_loop() -> None:
                 for entity in all_sprites:
                     screen.blit(entity.surf, entity.rect)
             
-                # También se redibujan los proyectiles:
+                # También se redibujan los proyectiles del jugador:
                 for projectile in player.projectiles:
                     screen.blit(projectile.surf, projectile.rect)
-            
+                
+                # También se redibujan los proyectiles del alien:
+                for projectile in alien_projectiles:
+                    screen.blit(projectile.surf, projectile.rect)
+                
                 # Redibujo el corazón:
                 screen.blit(sprite_heart.surf, sprite_heart.rect)
             
@@ -186,7 +194,8 @@ def game_loop() -> None:
                 pressed_keys = pygame.key.get_pressed() # Da como una lista de qué teclas están presionadas.
                 player.update(pressed_keys) # El jugador se mueve según lo digan las teclas presionadas.
                 enemies.update() # Los enemigos se mueven (aleatoriamente).
-            
+                alien_projectiles.update()
+
                 # Si choco con algo, pierdo una vida.
                 collided_enemy = pygame.sprite.spritecollideany(player, enemies)
                 if collided_enemy:
@@ -196,20 +205,42 @@ def game_loop() -> None:
                     if player.lives == 0:
                         game_over = True #Cambiamos el estado del juego.
                         lost = True
+                
+                for projectile in alien_projectiles:
+                    if projectile.rect.colliderect(player.rect):
+                        player.lives -= 1
+                        projectile.kill()
+                        if player.lives == 0:
+                            running = False
+                            lost = True
             
-            # iteramos sobre cada evento en la cola:
+        # iteramos sobre cada evento en la cola:
         for event in pygame.event.get():
             if event.type == QUIT:
                 running = False
                 
             # Si se ejecutó el evento de añadir un meteorito:
-            elif event.type == ADDENEMY and not game_over:
+            elif event.type == ADDMETEOR and not game_over:
                 new_enemy = Meteor(SCREEN_WIDTH, SCREEN_HEIGHT)
                 enemies.add(new_enemy) # Añadimos al meteorito al grupo de los meteoritos.
                 all_sprites.add(new_enemy) # Añadimos al meteorito al grupo de todos los sprites.
                 # Como es un meteorito por segundo, le damos puntaje al jugador:
                 player.score += 1
             
+            elif event.type == ADDALIEN and not game_over:
+                new_enemy = Alien(SCREEN_WIDTH, SCREEN_HEIGHT, alien_projectiles)
+                enemies.add(new_enemy) # Añadimos al meteorito al grupo de los meteoritos.
+                all_sprites.add(new_enemy) # Añadimos al meteorito al grupo de todos los sprites.
+                # Como es un meteorito por segundo, le damos puntaje al jugador:
+                player.score += 1
+            
+            elif event.type == ADDALIENPLUS and not game_over:
+                new_enemy = AlienPlus(SCREEN_WIDTH, SCREEN_HEIGHT, alien_projectiles)
+                enemies.add(new_enemy) # Añadimos al meteorito al grupo de los meteoritos.
+                all_sprites.add(new_enemy) # Añadimos al meteorito al grupo de todos los sprites.
+                # Como es un meteorito por segundo, le damos puntaje al jugador:
+                player.score += 1
+
             #Control de eventos pantalla de inicio.
             elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1 and running_screen == True:
                 if exit_button_inicio.collidepoint(pygame.mouse.get_pos()):
@@ -249,7 +280,8 @@ def game_loop() -> None:
             
         # Esto borra si colisionan los proyectiles con los enemigos:
         pygame.sprite.groupcollide(player.projectiles, enemies, True, True)
-            
+        pygame.sprite.groupcollide(player.projectiles, alien_projectiles, True, True)
+
         clock.tick(40)
             
         pygame.display.flip()
