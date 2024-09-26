@@ -1,0 +1,58 @@
+#cv {
+    height: 1000px;
+    width: 700px;
+    display: flex;
+}
+
+#contenedor_izquierda {
+    background-color: crimson;
+    color: white;
+    height: 1000px;
+    width: 250px;
+    padding: 30px;
+}
+
+#contenedor_derecha {
+    background-color: darkslategray;
+    color: white;
+    height: 1000px;
+    width: 450px;
+    padding: 30px;
+    align-items: center;
+}
+
+#contenedor_foto {
+    width: 250px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#foto_perfil {
+    height: 200px;
+    width: 200px;
+}
+
+#contenedor_nombre {
+    width: 450px;
+    display: flex;
+    flex-direction: column;
+    text-align: right;
+}
+
+.contenedor_subtitulo {
+    width: 450px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    border: 2px crimson solid;
+}
+.icono {
+    height: 50px;
+    width: 50px;
+}
+
+.contenedor_item_contacto {
+    display: flex;
+    gap: 5px;
+}
