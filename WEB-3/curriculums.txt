@@ -1,0 +1,7 @@
+Manolo;Hernandez;Ingeniero Civil (en proceso);+56 9 9335 2169;juan_manuel1402@uc.cl;Universidad Católica;Universidad Católica
+Jorge;Muñoz;Ph.D en Computación;+56 9 1234 5678;jorge@uc.cl;Universidad Católica;Universitat Politècnica de Catalunya
+Rocio;Ladron De Guevara;Ingeniero Civil (en proceso);+56 9 1234 5678;rociohgj@uc.cl;Universidad Católica;Universidad Católica
+Catalina;Castillo;Otaku del dcc;666;cfcastillo3@uc.cl;pipupipu;uc zzz
+Gabriela;Arriagada;Ingeniera mecánica;el suyo;gabriela.arrigada@uc.cl;la uc lamentablemente;tambien la uc
+Vicente;González;Ingeniero Civil de Industrias;+56 9 1234 5678;vgonzacis@uc.cl;DCC;La UC
+Toba;pezo;industrial 🤮;su mama;toba@uc.cl;la uc lamentablemente;tambien la uc
