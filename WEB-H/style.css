@@ -4,8 +4,25 @@ html, body {
 }
 
 #barra-superior {
-    background-color: brown;
-    color: black;
-    height: 10vh;
+    background-color: #173F8A;
+    color: white;
+    height: 5vh;
     width: 100vw;
+    display: flex;
+    justify-content: flex-end;
+}
+
+#fondo {
+    background-color: #f2f4f7;
+    height: 95vh;
+    width: 100vw;
+}
+
+.form-inicio-sesion {
+    margin: 0;
+    padding: 1vh 1vh 0 0;
+}
+
+.texto {
+    margin: 0;
 }
