@@ -1,0 +1,11 @@
+html, body {
+    margin: 0;
+    padding: 0;
+}
+
+#barra-superior {
+    background-color: brown;
+    color: black;
+    height: 10vh;
+    width: 100vw;
+}
