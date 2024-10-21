@@ -22,7 +22,7 @@ lista_atributos = list(Usuario.__annotations__.keys())
 
 @app.get("/usuario/{username}-{contrasena}")
 def dar_usuario(username: str, contrasena: str):
-    archivo = open("usuarios.txt", "r", encoding="utf-8") 
+    archivo = open("usuarios.txt", "r", encoding="utf-8")
     informacion = archivo.readlines()
     archivo.close()
     for i in range(len(informacion)):

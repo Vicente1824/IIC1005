@@ -1,2 +1,1 @@
-omg1824;Vicente;Cagabi;asdf;vicente
-tomitom;Tomas;Correa;miamor@team.cl;ola
+Vicente1824;Vicente;González;vicente@uc.cl;contrasena
