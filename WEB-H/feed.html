@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>DCChat</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="barra-superior-feed">
+    </div>
+    <div id="fondo-feed">
+        <div id="barra-lateral">
+            <h2 id="titulo-barra-lateral">Nombre de usuario</h2>
+            <h3 id="subtitulo-barra-lateral">¡Bienvenido nombre!</h3>
+            <script>
+                const nombre = localStorage.getItem('nombre');
+                const username = localStorage.getItem('username');
+                document.getElementById('titulo-barra-lateral').textContent = username;
+                document.getElementById('subtitulo-barra-lateral').textContent = `¡Bienvenido ${nombre}!`;
+            </script>
+            <div class="contenedor-opciones">
+                <a href="https://cursos.canvas.uc.cl/courses/75115">Link a canvas</a>
+            </div>
+            <div class="contenedor-opciones">
+                <a href="https://t.me/+EvWFgHYsPl1iYTVh">Link a Telegram del curso</a>
+            </div>
+            <div class="contenedor-opciones">
+                <a href="https://www.uc.cl/">Link a la página de la UC</a>
+            </div>
+            <div class="contenedor-opciones">
+                <a>¡Pronto añadiremos más opciones!</a>
+            </div>
+        </div>
+        <div id="contenedor-publicaciones">
+            <div class="publicacion">
+                <h3 class="texto">Jorge Muñoz</h3>
+                <p class="texto">Hola chavales qué tal estáis</p>
+            </div>
+            <div class="publicacion">
+                <h3 class="texto">Vicente González</h3>
+                <p class="texto">Hola profeee, bien y usted?</p>
+            </div>
+            <div class="publicacion">
+                <h3 class="texto">Cristóbal Valdés Pezo</h3>
+                <p class="texto">Profesor yo soy industrial y me encanta la plata viva la plata abajo la ética laboral y los derechos de los trabajadores me gusta la plata</p>
+            </div>
+            <div class="publicacion">
+                <h3 class="texto">Nachito Sánchez</h3>
+                <h5 class="texto">con Comite de Integridad Académica, Loreto Valenzuela</h2>
+                <p class="texto">Yo no admito este tipo de estudiantes en mi universidad.</p>
+            </div>
+            <div class="publicacion">
+                <h3 class="texto">Gabriela Arriagada</h3>
+                <p class="texto">Está temblando?</p>
+            </div>
+            <div class="publicacion">
+                <h3 class="texto">Cristóbal Ruiz</h3>
+                <p class="texto">Profe voy llegando tarde </p>
+                <img src="entrada.jpg" class="imagen">
+            </div>
+            <div class="publicacion">
+                <h3 class="texto">Jorge Muñoz</h3>
+                <p class="texto">Chicos iré a una conferencia de PM, por favor hacerles caso a los ayudantes, traerán muy buenas experiencias</p>
+            </div>
+            <div class="publicacion">
+                <h3 class="texto">Pato de Goma</h3>
+                <p class="texto">Estado actual: leyendo código...</p>
+            </div>
+        </div>
+        <div id="contenedor-personas">
+            <h2 class="texto">Personas de la clase</h2>
+            <h3 class="texto">Ayudantes:</h3>
+            <ul class="contenedor_personas">
+                <li class="texto">Manolo</li>
+                <li class="texto">Bea</li>
+                <li class="texto">Rocio</li>
+                <li class="texto">Carter</li>
+                <li class="texto">Gabi</li>
+                <li class="texto">Mimi</li>
+                <li class="texto">Benja</li>
+                <li class="texto">Ame</li>
+                <li class="texto">Pipe</li>
+                <li class="texto">Kahil</li>
+                <li class="texto">Gus</li>
+                <li class="texto">Zar</li>
+        </div>
+    </div>
+</body>
+<script src="main.js"></script>
+</html>
